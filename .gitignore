@@ -1,0 +1,4 @@
+.ci-work/
+analysis/test_data/
+*.pyc
+__pycache__/

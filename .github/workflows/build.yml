@@ -1,0 +1,27 @@
+name: Build against LAMMPS patch_22Dec2022
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            cmake \
+            git
+
+      - name: Build LAMMPS with Wang-Landau fix
+        run: bash scripts/ci/build_lammps_patch22Dec2022.sh
