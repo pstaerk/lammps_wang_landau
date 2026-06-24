@@ -34,11 +34,17 @@ GitHub Actions runs `.github/workflows/build.yml` to verify that
 If you use this code in academic work, please cite:
 
 ```bibtex
-@software{wang_landau_lammps_extension,
-  author       = {Your Name},
-  title        = {Wang-Landau Extension for LAMMPS},
-  year         = {2026},
-  version      = {0.1.0},
-  url          = {https://github.com/<owner>/<repo>}
+@article{stark26d,
+  title   = {Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
+  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
+  year    = {2026},
+  month   = {feb},
+  journal = {The Journal of Chemical Physics},
+  volume  = {164},
+  number  = {6},
+  pages   = {064507},
+  issn    = {0021-9606},
+  doi     = {10.1063/5.0314875},
+  urldate = {2026-02-13}
 }
 ```
