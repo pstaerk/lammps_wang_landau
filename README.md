@@ -34,7 +34,7 @@ GitHub Actions runs `.github/workflows/build.yml` to verify that
 If you use this code in academic work, please cite:
 
 ```bibtex
-@article{stark26d,
+@article{stark26a,
   title   = {Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
   author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
   year    = {2026},
