@@ -1,0 +1,58 @@
+/* Custom styles for LAMMPS Wang-Landau documentation */
+
+/* Code blocks */
+.highlight {
+    border-radius: 8px;
+}
+
+/* Admonitions */
+.md-typeset .admonition,
+.md-typeset details {
+    border-radius: 8px;
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+    background-color: #1E3A5F;
+    color: white;
+}
+
+/* Links */
+.md-typeset a {
+    color: #2B5C8A;
+}
+
+.md-typeset a:hover {
+    color: #FF6B35;
+}
+
+/* Navigation */
+.md-nav__link--active {
+    font-weight: bold;
+}
+
+/* Footnotes */
+.md-typeset .footnote-backref {
+    color: #2B5C8A;
+}
+
+/* Hero section styling for index page */
+.md-content__inner > h1:first-of-type {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Badges */
+img[src*="badge"] {
+    border-radius: 4px;
+}
+
+/* Custom callout for tips */
+.md-typeset .tip {
+    border-left-color: #FF6B35;
+}

@@ -1,3 +1,7 @@
+---
+title: Analysis
+---
+
 # Analysis
 
 Post-processing helpers are in `analysis/scripts/`.

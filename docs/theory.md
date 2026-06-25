@@ -1,3 +1,7 @@
+---
+title: Theory
+---
+
 # Wang-Landau Method
 
 Document the method details used by this implementation:

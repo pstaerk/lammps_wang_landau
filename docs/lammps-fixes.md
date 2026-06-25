@@ -1,3 +1,7 @@
+---
+title: LAMMPS Fixes
+---
+
 # LAMMPS Fix Overview
 
 This project contains one Wang-Landau `fix` style implementation in:

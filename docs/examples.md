@@ -1,3 +1,7 @@
+---
+title: Examples
+---
+
 # Examples
 
 Examples are organized by increasing complexity:

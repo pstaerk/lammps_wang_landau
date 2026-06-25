@@ -1,3 +1,7 @@
+---
+title: Installation
+---
+
 # Installation
 
 This repository tracks Wang-Landau fixes intended for the LAMMPS `MC` package.

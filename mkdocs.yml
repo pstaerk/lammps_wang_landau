@@ -1,0 +1,97 @@
+site_name: LAMMPS Wang-Landau
+site_description: A Wang-Landau Monte Carlo extension for LAMMPS
+site_author: Philipp Stärk, Alexander Schlaich
+site_url: https://pstaerk.github.io/lammps_wang_landau
+
+repo_name: pstaerk/lammps_wang_landau
+repo_url: https://github.com/pstaerk/lammps_wang_landau
+edit_uri: edit/main/docs/
+
+# Theme
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep blue
+      accent: deep blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
+  features:
+    - navigation.instant
+    - navigation.instant.preview
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/pstaerk
+    - icon: fontawesome/brands/orcid
+      link: https://orcid.org/0000-0003-4293-0156
+  generator: false  # Remove "Made with Material for MkDocs"
+
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.mark
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.smartsymbols
+  - footnotes
+
+# Plugins
+plugins:
+  - search:
+      lang:
+        - en
+  - minify:
+      minify_html: !ENV [MK_DOCS_MINIFY_HTML, false]
+
+# Navigation
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Theory: theory.md
+  - Examples: examples.md
+  - Analysis: analysis.md
+  - LAMMPS Fixes: lammps-fixes.md
+  - Changelog: changelog.md
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
