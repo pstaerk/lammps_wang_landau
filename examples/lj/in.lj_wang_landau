@@ -1,0 +1,76 @@
+# Minimal Wang-Landau example for neutral Lennard-Jones particles
+# 
+# This runs a GCMC+Wang-Landau simulation to sample the density of states
+# for a simple Lennard-Jones fluid. The fix performs:
+#   - Translation MC moves on existing particles
+#   - Insertion/deletion MC moves (GCMC)
+#   - Wang-Landau flat-histogram sampling in the NVT ensemble
+#
+# Output: qs.dat contains the density of states [N, ln(g), histogram]
+
+units real
+dimension 3
+boundary p p p
+atom_style atomic
+
+# Box size and initial particle setup
+variable L equal 25.0
+variable T equal 300.0
+variable seed equal 12345
+
+region box block 0 ${L} 0 ${L} 0 ${L}
+create_box 1 box
+
+# Start with a sparse initial configuration
+create_atoms 1 random 50 NULL
+
+# Lennard-Jones potential (Argon-like parameters)
+pair_style lj/cut 8.0
+pair_coeff 1 1 0.238 3.0
+pair_modify shift yes
+
+mass 1 39.95
+
+# Define group for MC moves
+group gas type 1
+
+# Wang-Landau + GCMC fix
+# Syntax: fix wang_landau group nevery nexchanges nmcmoves type seed T displace f min max accuracy
+# See docs/theory-wang-landau.md for detailed explanations of parameters
+#
+# nevery:     perform MC moves every this many timesteps
+# nexchanges: number of exchange attempts per nevery
+# nmcmoves:   number of MC moves per exchange
+# type:       atom type for GCMC insertion
+# seed:       random number seed
+# T:          reservoir temperature
+# displace:   max translation distance
+# f:          initial Wang-Landau modification factor (e = 2.718...)
+# min/max:    particle number range for Wang-Landau bins
+# accuracy:   flatness criterion (see docs)
+variable f0 equal exp(1.0)
+
+fix mywl gas wang_landau 1 10 50 1 ${seed} ${T} 3.0 ${f0} min 10 max 80 accuracy 500
+
+# Thermostat (required for NVT)
+fix nvt gas nvt temp ${T} ${T} 100.0 ${seed}
+
+# Neighbor settings
+neighbor 0.5 bin
+neigh_modify every 1 delay 5 check yes
+
+# Output
+thermo_style custom step atoms f_mywl[0] f_mywl[1]
+thermo 1000
+
+# Energy minimization to remove overlaps
+minimize 1.0e-4 1.0e-6 100 1000
+
+# Run Wang-Landau sampling
+# The simulation adaptsively refines the DOS until the flatness criterion is met
+run 50000
+
+# Write final density of states to qs.dat
+# Format: N  ln(g(N))  histogram(N)
+print "Wang-Landau simulation complete"
+print "Check qs.dat for the density of states"
