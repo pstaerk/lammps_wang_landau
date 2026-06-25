@@ -4,7 +4,7 @@
 
 <h1 align="center">LAMMPS Wang-Landau</h1>
 
-<p align="center">This repo contains a implementation of the Wang-Landau enhanced sampling (Monte Carlo) algorithm for use within <a href="www.lammps.org">LAMMPS</a>.</p>
+<p align="center">This repo contains a implementation of the Wang-Landau enhanced sampling (Monte Carlo) algorithm for use within <a href="https://www.lammps.org">LAMMPS</a>.</p>
 
 <p align="center">
   <a href="https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml">
