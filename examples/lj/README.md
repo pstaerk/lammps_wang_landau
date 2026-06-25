@@ -12,6 +12,7 @@ A minimal example demonstrating the Wang-Landau Monte Carlo method for a neutral
 ## Files
 
 - `in.lj_wang_landau` - LAMMPS input script
+- `qs.dat` - Initial density of states file (will be overwritten with results)
 
 ## Running
 
