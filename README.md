@@ -10,7 +10,6 @@
   <a href="https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml">
     <img src="https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml/badge.svg" alt="Build">
   </a>
-
 </p>
 
 ---
@@ -48,5 +47,13 @@ Full docs at [pstaerk.github.io/lammps_wang_landau](https://pstaerk.github.io/la
   number  = {6},
   pages   = {064507},
   doi     = {10.1063/5.0314875}
+}
+
+@misc{stark26b,
+  title   = {Replication Data for: Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
+  author  = {St{\"a}rk, P. and Schlaich, A.},
+  year    = {2026},
+  publisher = {DaRUS},
+  doi     = {10.18419/DARUS-5037}
 }
 ```
