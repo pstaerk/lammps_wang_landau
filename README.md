@@ -8,7 +8,7 @@ This repository contains a Wang-Landau Monte Carlo extension for LAMMPS, runnabl
 .
 ├── docs/                       # installation, theory, usage, analysis notes
 ├── src/lammps/MC/              # fix styles integrated with LAMMPS MC package
-├── examples/                   # ready-to-run input decks
+├── examples/lj/               # Lennard-Jones Wang-Landau example
 ├── analysis/                   # post-processing scripts/notebooks
 ├── tests/                      # regression/smoke checks for examples
 └── .github/workflows/          # CI and release workflows
@@ -19,7 +19,7 @@ This repository contains a Wang-Landau Monte Carlo extension for LAMMPS, runnabl
 1. Use LAMMPS `patch_22Dec2022` as the base release.
 2. Copy the fix sources from `src/lammps/MC/` into `lammps/src/MC/`.
 3. Build LAMMPS with the `MC` package enabled.
-4. Run an input from `examples/minimal/`.
+4. Run an input from `examples/lj/`.
 5. Use scripts in `analysis/scripts/` for post-processing.
 
 See `docs/installation.md` and `docs/examples.md` for details.
@@ -46,5 +46,18 @@ If you use this code in academic work, please cite:
   issn    = {0021-9606},
   doi     = {10.1063/5.0314875},
   urldate = {2026-02-13}
+}
+```
+
+The raw simulation data and analysis results are available in the following data repository:
+
+```bibtex
+@misc{stark26b,
+  title   = {Replication Data for: Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
+  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
+  year    = {2026},
+  publisher = {DaRUS},
+  doi     = {10.18419/DARUS-5037},
+  url     = {https://doi.org/10.18419/DARUS-5037}
 }
 ```
