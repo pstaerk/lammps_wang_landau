@@ -1,63 +1,52 @@
-# LAMMPS Wang-Landau Extension
+<p align="center">
+  <img src="docs/assets/logo.svg" alt="LAMMPS Wang-Landau" width="200"/>
+</p>
 
-This repository contains a Wang-Landau Monte Carlo extension for LAMMPS, runnable examples, and simple analysis tooling.
+<h1 align="center">LAMMPS Wang-Landau</h1>
 
-## Repository layout
+<p align="center">Wang-Landau Monte Carlo extension for LAMMPS</p>
 
-```text
-.
-├── docs/                       # installation, theory, usage, analysis notes
-├── src/lammps/MC/              # fix styles integrated with LAMMPS MC package
-├── examples/lj/               # Lennard-Jones Wang-Landau example
-├── analysis/                   # post-processing scripts/notebooks
-├── tests/                      # regression/smoke checks for examples
-└── .github/workflows/          # CI and release workflows
+<p align="center">
+  <a href="https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml">
+    <img src="https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml/badge.svg" alt="Build">
+  </a>
+
+</p>
+
+---
+
+## Quick Start
+
+```bash
+# 1. Clone LAMMPS patch_22Dec2022
+git clone https://github.com/lammps/lammps.git -b patch_22Dec2022
+
+# 2. Copy fix sources
+cp src/lammps/MC/* lammps/src/MC/
+
+# 3. Build with MC package
+cd lammps && make yes-MC && make mpi
+
+# 4. Run example
+cd ../lammps_wang_landau/examples/lj
+mpirun -np 4 lammps -in in.wang_landau
 ```
 
-## Quick start
+## Documentation
 
-1. Use LAMMPS `patch_22Dec2022` as the base release.
-2. Copy the fix sources from `src/lammps/MC/` into `lammps/src/MC/`.
-3. Build LAMMPS with the `MC` package enabled.
-4. Run an input from `examples/lj/`.
-5. Use scripts in `analysis/scripts/` for post-processing.
-
-See `docs/installation.md` and `docs/examples.md` for details.
-
-## Build testing
-
-GitHub Actions runs `.github/workflows/build.yml` to verify that
-`fix_wang_landau.cpp/.h` compile against LAMMPS `patch_22Dec2022`.
+Full docs at [pstaerk.github.io/lammps_wang_landau](https://pstaerk.github.io/lammps_wang_landau/)
 
 ## Citation
-
-If you use this code in academic work, please cite:
 
 ```bibtex
 @article{stark26a,
   title   = {Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
-  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
+  author  = {St{\"a}rk, P. and Schlaich, A.},
   year    = {2026},
-  month   = {feb},
   journal = {The Journal of Chemical Physics},
   volume  = {164},
   number  = {6},
   pages   = {064507},
-  issn    = {0021-9606},
-  doi     = {10.1063/5.0314875},
-  urldate = {2026-02-13}
-}
-```
-
-The raw simulation data and analysis results are available in the following data repository:
-
-```bibtex
-@misc{stark26b,
-  title   = {Replication Data for: Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
-  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
-  year    = {2026},
-  publisher = {DaRUS},
-  doi     = {10.18419/DARUS-5037},
-  url     = {https://doi.org/10.18419/DARUS-5037}
+  doi     = {10.1063/5.0314875}
 }
 ```
