@@ -28,7 +28,7 @@ cd lammps && make yes-MC && make mpi
 
 # 4. Run example
 cd ../lammps_wang_landau/examples/lj
-mpirun -np 4 lammps -in in.wang_landau
+lammps -in in.wang_landau
 ```
 
 ## Documentation
