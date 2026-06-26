@@ -6,12 +6,13 @@ title: Examples
 
 Examples are organized by increasing complexity:
 
-- `examples/minimal/`: smallest runnable Wang-Landau setup
-- `examples/lj/`: Lennard-Jones validation case
-- `examples/publication_case/`: full settings used for paper figures
+- `examples/lj/`: One single Wang-Landau iteration for a simple Lennard-Jones 
+fluid
+- `examples/lj_iterations/`: Multiple iterations of the WL-algorithm with
+updates
 
 Each folder should contain:
 
 - `in.*` LAMMPS input
-- optional `data.*` files
-- short `README.md` with expected runtime and outputs
+- `qs.dat` Histogram output file.
+- short `README.md` with description of inputs and outputs

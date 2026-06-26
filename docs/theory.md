@@ -32,6 +32,15 @@ $$
 N_{\mathrm{eq}}(\mu) = \min_N \Omega(N, \mu).
 $$
 
+As an example, we show in the figure below a typical output of the Wang-Landau
+sampling model for a simple model fluid with phase coexistence between a low-
+density vapor and high-density fluid phase[^2][^3][^4].
+
+<figure markdown>
+  ![Hello World](./assets/image.png){ width=60% }
+  <figcaption>Example output of the Wang-Landau sampling method for a charged Lennard-Jones fluid: the Landau free energy of a fluid with phase coexistence between a liquid and a vapor phase, see [2,3,4].</figcaption>
+</figure>
+
 In the following, we briefly describe the main ideas behind the method by presenting the algorithm.
 
 
@@ -126,6 +135,6 @@ have to determine the following parameters.
 | `accuracy` | 500 | Accuracy factor for stopping criterion  |
 
 [^1]: Wang, F. G. & Landau, D. P. [Efficient, Multiple-Range Random Walk Algorithm to Calculate the Density of States](https://doi.org/10.1103/PhysRevLett.86.2050). *Phys. Rev. Lett.* **86**, 2050–2053 (2001).
-
 [^2]: Zhou, C.; Bhatt, R. N. [Understanding and Improving the Wang-Landau Algorithm](https://doi.org/10.1103/PhysRevE.72.025701). *Phys. Rev. E* **72**, 025701. (2005).
-
+[^3]: Stärk, P. [Consistent Modeling of Electrostatic Interactions in Confined Electrode Systems: Thermodynamic Behavior and Macroscopic Properties from Atomistic Simulations](https://doi.org/10.18419/opus-18179). (2026).
+[^4]: Stärk, P.; Schlaich, A. [Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement](https://doi.org/10.1063/5.0314875). *J. Chem. Phys.* **164** (6), 064507. (2026).
