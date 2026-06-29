@@ -17,7 +17,6 @@ A **Wang-Landau Monte Carlo** extension for [LAMMPS](https://www.lammps.org/), e
 - **Parallel sampling** — leverages LAMMPS MPI parallelization
 - **Versatile** — applicable to Lennard-Jones, electrolytes, and more
 
----
 
 ## Quick Start
 
@@ -49,7 +48,7 @@ If you use this code in academic work, please cite:
 ```bibtex
 @article{stark26a,
   title   = {Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
-  author  = {St{\"a}rk, P. and Schlaich, A.},
+  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
   year    = {2026},
   journal = {The Journal of Chemical Physics},
   volume  = {164},
@@ -60,7 +59,7 @@ If you use this code in academic work, please cite:
 
 @misc{stark26b,
   title   = {Replication Data for: Phase Diagram and Criticality of the Modified Primitive Electrolyte Model in Bulk and in Inert and Conducting Confinement},
-  author  = {St{\"a}rk, P. and Schlaich, A.},
+  author  = {St{\"a}rk, Philipp and Schlaich, Alexander},
   year    = {2026},
   publisher = {DaRUS},
   doi     = {10.18419/DARUS-5037}
@@ -77,7 +76,7 @@ If you use this code in academic work, please cite:
 | [Theory](theory.md) | Wang-Landau algorithm background |
 | [Examples](examples.md) | Runnable simulation examples |
 | [Analysis](analysis.md) | Post-processing tools |
-| [LAMMPS Fixes](lammps-fixes.md) | Detailed fix documentation |
+| [Usage within LAMMPS](lammps-fixes.md) | Detailed fix documentation |
 
 ---
 

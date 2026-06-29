@@ -89,7 +89,7 @@ nav:
   - Theory: theory.md
   - Examples: examples.md
   - Analysis: analysis.md
-  - LAMMPS Fixes: lammps-fixes.md
+  - Usage in LAMMPS: lammps-fixes.md
   - Changelog: changelog.md
 
 # Extra CSS
