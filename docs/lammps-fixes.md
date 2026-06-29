@@ -63,6 +63,30 @@ fluid.
 
 ## Advanced Syntax
 
-To come soon.
+An example for a more complex system to sample is given by the following:
+
+```
+fix mywl <group> wang_landau <nevery> <ninsert> <ndisplace> 0 <seed> \
+    <temperature> <displace> <f_fac> \
+    min <nmin> max <nmax> region <region_name> \
+    shake <shake_name> mol <molecule_name> tfac_insert <tfac_insert> \
+    accuracy <accuracy> full_energy
+```
+
+Where we refer to the section above for an explanation of the basic structure.
+Here, we show how to use rigid molecules via
+[shake](https://docs.lammps.org/fix_shake.html) `shake`, using molecules via
+[molecule](https://docs.lammps.org/molecule.html) `mol` and setting a 
+temperature correction factor for the molecules degrees of freedom (see
+[LAMMPS docs](https://docs.lammps.org/fix_gcmc.html#description)).
+A insertion region can be set via
+[LAMMPS regions](https://docs.lammps.org/region.html) and incorporated during
+sampling via `region`.
+
+It is also important to note that for extended molecules the acceptance
+probability usually decreases drastically and thus requires a larger number of
+visits per iteration, as controlled via the `accuracy` convergence criterion.
+A good default value for a classical water model, for example, is
+`accuracy 1000`.
 
 [^1]: Wang, F. G. & Landau, D. P. [Efficient, Multiple-Range Random Walk Algorithm to Calculate the Density of States](https://doi.org/10.1103/PhysRevLett.86.2050). *Phys. Rev. Lett.* **86**, 2050–2053 (2001).
