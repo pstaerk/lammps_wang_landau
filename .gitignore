@@ -2,3 +2,4 @@
 analysis/test_data/
 *.pyc
 __pycache__/
+*.DS_STORE

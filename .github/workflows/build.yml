@@ -3,7 +3,17 @@ name: Build against LAMMPS patch_22Dec2022
 on:
   push:
     branches: ["**"]
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - 'src/**'
+      - '.github/workflows/build.yml'
   pull_request:
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - 'src/**'
+      - '.github/workflows/build.yml'
   workflow_dispatch:
 
 jobs:
