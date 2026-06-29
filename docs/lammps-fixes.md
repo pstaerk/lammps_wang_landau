@@ -6,8 +6,8 @@ title: Using the Method in LAMMPS
 
 This project contains one Wang-Landau `fix` style implementation in:
 
-- `src/lammps/MC/fix_wl.h`
-- `src/lammps/MC/fix_wl.cpp`
+- `src/lammps/MC/fix_wang_landau.h`
+- `src/lammps/MC/fix_wang_landau.cpp`
 
 ## Basic Syntax
 
