@@ -96,7 +96,7 @@ $\propto \sqrt{h(N) f_i}$, once the sampling is close to convergence.
 
 It is thus sensible to use
 $$
-h(N) \ge \frac{A}{\ln{\sqrt{f_i}}}, \forall N \in [N_{\mathrm{min}}, N_{\mathrm{max}}]
+h(N) \ge \frac{A}{\sqrt{\ln{f_i}}}, \forall N \in [N_{\mathrm{min}}, N_{\mathrm{max}}]
 $$
 as a stopping criterion, with $A$ some factor representing the number of 
 measurements.

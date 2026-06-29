@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot grand potential Omega = kBT ln Q - mu N from Wang-Landau DOS."""
+"""Plot grand potential Omega = - kBT ln Q - mu N from Wang-Landau DOS."""
 
 import glob
 import sys
@@ -11,7 +11,7 @@ ureg = pint.UnitRegistry()
 ureg.enable_contexts('chemistry')
 
 # Physical constants
-kB = 1.987e-3 * ureg.kcal / ureg.mole / ureg.kelvin  # R in kcal
+kB = 1.987e-3 * ureg.kcal / ureg.mole / ureg.kelvin
 T = 300 * ureg.kelvin
 mu_vals = [-7.75, -8.0, -8.25, -8.5, -8.75] * ureg.kcal / ureg.mole
 
