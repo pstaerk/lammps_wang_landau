@@ -42,6 +42,7 @@
 #include "random_park.h"
 #include "region.h"
 #include "update.h"
+#include "timer.h"
 
 #include <cmath>
 #include <cstring>
@@ -76,7 +77,7 @@ FixWangLandau::FixWangLandau(LAMMPS *lmp, int narg, char **arg) :
   grouptypestrings(nullptr), grouptypebits(nullptr), grouptypes(nullptr), local_gas_list(nullptr),
   molcoords(nullptr), molq(nullptr), molimage(nullptr), random_equal(nullptr), random_unequal(nullptr),
   fixrigid(nullptr), fixshake(nullptr), fixconp(nullptr), idrigid(nullptr), idshake(nullptr),
-  idconp(nullptr), nonneutralflag(false)
+  idconp(nullptr)
 {
   if (narg < 11) error->all(FLERR,"Illegal fix gcmc command");
 
@@ -266,9 +267,6 @@ void FixWangLandau::options(int narg, char **arg)
   charge = 0.0;
   charge_flag = false;
   full_flag = false;
-  nonneutralflag = false;
-  kspace_volume = 0.0;
-  kspace_qscale = 0.0;
   ngroups = 0;
   int ngroupsmax = 0;
   groupstrings = nullptr;
@@ -284,6 +282,7 @@ void FixWangLandau::options(int narg, char **arg)
   min_ngas = -1;
   max_ngas = INT_MAX;
   accuracy_fac = 500.0;
+  wl_finished = false;
 
   int iarg = 0;
   while (iarg < narg) {
@@ -356,17 +355,6 @@ void FixWangLandau::options(int narg, char **arg)
       iarg += 2;
     } else if (strcmp(arg[iarg],"full_energy") == 0) {
       full_flag = true;
-      iarg += 1;
-    } else if (strcmp(arg[iarg],"nonneutral") == 0) {
-      nonneutralflag = true;
-      if (force->kspace == nullptr)
-        error->all(FLERR,"Fix gcmc nonneutral option requires a kspace style");
-      kspace_volume = domain->prd[0] * domain->prd[1] * domain->prd[2] *
-                      force->kspace->slab_volfactor;
-      auto kspace_scale = static_cast<double *>(force->kspace->extract("scale"));
-      if (kspace_scale == nullptr)
-        error->all(FLERR,"Fix gcmc could not access kspace scaling factor");
-      kspace_qscale = force->qqrd2e * (*kspace_scale);
       iarg += 1;
     } else if (strcmp(arg[iarg],"group") == 0) {
       if (iarg+2 > narg) error->all(FLERR,"Illegal fix gcmc command");
@@ -907,6 +895,12 @@ void FixWangLandau::pre_exchange()
 
 void FixWangLandau::wang_landau_update(const int n)
 {
+  // an activated wl_finished flag means
+  // that the histogram is converged, so we don't
+  // upate the histogram and qs.
+  if (wl_finished) return;
+
+
   // Wang Landau update step
   unsigned int bin_index = n2i[n];
   qs[bin_index] += std::log(f);
@@ -917,13 +911,22 @@ void FixWangLandau::wang_landau_update(const int n)
   // of hs being greater than 500 / sqrt(log(f))
   for (auto h : hs) {
     if (h < accuracy_fac / std::sqrt(std::log(f))) {
-      return;
+        wl_finished = false; // it can be removed, I think!!
+        return;
     }
   }
 
+  // converged
   write_histogram();
-  MPI_Finalize();
-  exit(0);
+  wl_finished = true;
+
+  // friendly
+  timer->force_timeout();
+  return;
+  
+  //write_histogram();
+  //MPI_Finalize();
+  //exit(0);
 }
 
 /* ----------------------------------------------------------------------
@@ -931,15 +934,21 @@ void FixWangLandau::wang_landau_update(const int n)
 
 void FixWangLandau::write_histogram() {
   // Write the ns, qs, and hs to the qs.dat file, tab separated
-  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Barrier(world);
   if (comm->me == 0) {
     std::ofstream file("qs.dat");
+    if (!file.is_open()) {
+      std::cerr << "Error opening file qs.dat" << std::endl;
+      MPI_Abort(world, 1);
+    }
     for (unsigned int i = 0; i < ns.size(); i++) {
-      file << std::fixed << std::setprecision(17) << ns[i] << "\t" << qs[i] << "\t"
-           << hs[i] << std::endl;
+      file << 
+        std::scientific << std::setprecision(24) <<
+        ns[i] << "\t" << qs[i] << "\t" << hs[i] << std::endl;
     }
     file.close();
   }
+  MPI_Barrier(world);
 }
 
 /* ----------------------------------------------------------------------
@@ -1565,7 +1574,7 @@ void FixWangLandau::attempt_molecule_insertion()
 
   if (insertion_energy_sum < MAXENERGYTEST &&
       random_equal->uniform() < zz*volume*natoms_per_molecule*
-      exp(+wl_factor-beta*insertion_energy_sum)/(ngas + natoms_per_molecule)) {
+      exp(-wl_factor+beta*insertion_energy_sum)/(ngas + natoms_per_molecule)) {
 
     tagint maxmol = 0;
     for (int i = 0; i < atom->nlocal; i++) maxmol = MAX(maxmol,atom->molecule[i]);
@@ -2469,9 +2478,6 @@ double FixWangLandau::molecule_energy(tagint gas_molecule_id)
 
 double FixWangLandau::energy_full()
 {
-  // Hack
-  update->ntimestep += 1;
-
   int imolecule;
 
   if (triclinic) domain->x2lamda(atom->nlocal);
@@ -2486,12 +2492,8 @@ double FixWangLandau::energy_full()
   int vflag = 0;
 
   // Constant Potential Update call
-  // if (conpflag) 
-  // {
-  //   fixconp->pre_force(0);
-  //   // fixconp->pre_reverse(eflag, vflag);
-  // }
-
+  if (conpflag)
+    fixconp->pre_force(0);
 
   // if overlap check requested, if overlap,
   // return signal value for energy
@@ -2523,11 +2525,7 @@ double FixWangLandau::energy_full()
     }
     MPI_Allreduce(&overlaptest, &overlaptestall, 1,
                   MPI_INT, MPI_MAX, world);
-    if (overlaptestall) {
-      // Having incremented it before, we should decrement it here again
-      update->ntimestep -= 1;
-      return MAXENERGYSIGNAL;
-    }
+    if (overlaptestall) return MAXENERGYSIGNAL;
   }
 
   // clear forces so they don't accumulate over multiple
@@ -2536,7 +2534,6 @@ double FixWangLandau::energy_full()
   size_t nbytes = sizeof(double) * (atom->nlocal + atom->nghost);
   if (nbytes) memset(&atom->f[0][0],0,3*nbytes);
 
-  // TODO: check if double call is bad
   if (modify->n_pre_force) modify->pre_force(vflag);
 
   if (force->pair) force->pair->compute(eflag,vflag);
@@ -2549,23 +2546,6 @@ double FixWangLandau::energy_full()
   }
 
   if (force->kspace) force->kspace->compute(eflag,vflag);
-
-  if (nonneutralflag)
-  {
-    double qsum_local = 0.0;
-    if (atom->q) {
-      for (int i = 0; i < atom->nlocal; i++) qsum_local += atom->q[i];
-    }
-    double qsum = 0.0;
-    MPI_Allreduce(&qsum_local,&qsum,1,MPI_DOUBLE,MPI_SUM,world);
-
-    force->kspace->energy *= 0.5*kspace_volume;
-    force->kspace->energy +=
-      MY_PI2*qsum*qsum /
-                          (force->kspace->g_ewald*force->kspace->g_ewald*
-                           kspace_volume);
-    force->kspace->energy *= kspace_qscale;
-  }
 
   // unlike Verlet, not performing a reverse_comm() or forces here
   // b/c GCMC does not care about forces
@@ -2583,8 +2563,6 @@ double FixWangLandau::energy_full()
   update->eflag_global = update->ntimestep;
   double total_energy = c_pe->compute_scalar();
 
-  // Revert the thing before
-  update->ntimestep -= 1;
   return total_energy;
 }
 
