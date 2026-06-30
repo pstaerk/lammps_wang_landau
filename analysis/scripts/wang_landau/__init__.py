@@ -8,7 +8,7 @@ thermodynamic quantities and plots:
 * :func:`read_qs_dat`        - load a ``qs.dat`` file
 * :func:`helmholtz_free_energy` - F(N) = -k_B T ln g(N)
 * :func:`grand_potential`    - Omega(N, mu) = F(N) - mu N
-* :func:`equilibrium_particle_number` - argmin_N Omega(N, mu)
+* :func:`equilibrium_particle_number` - polynomial-fit minimum of Omega(N, mu)
 * :func:`plot_grand_potential`, :func:`plot_free_energy` - quick figures
 
 See ``docs/analysis.md`` for a walk-through.

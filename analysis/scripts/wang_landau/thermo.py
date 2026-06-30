@@ -38,14 +38,60 @@ def grand_potential(
     return helmholtz_free_energy(ln_g, T=T, kB=kB) - mu * N
 
 
+def _fitted_grand_potential(N, omega, degree):
+    r"""Fit ``omega(N)`` with a polynomial and locate its minimum.
+
+    Returns ``(poly, n_min)`` where ``poly`` is the fitted
+    :class:`numpy.poly1d` (or ``None`` when there are too few samples to fit)
+    and ``n_min`` is the minimizing ``N``. When the fit is unavailable or its
+    minimum lies outside the sampled range, ``n_min`` falls back to the
+    discrete :func:`numpy.argmin` of ``omega``.
+    """
+    n_min = float(N[int(np.argmin(omega))])
+
+    # Not enough points to fit the requested polynomial -> discrete argmin.
+    if N.size <= degree:
+        return None, n_min
+
+    coeffs = np.polyfit(N, omega, degree)  # highest power first
+    poly = np.poly1d(coeffs)
+
+    # Stationary points = real roots of the derivative inside [N.min, N.max].
+    n_lo, n_hi = float(N.min()), float(N.max())
+    roots = np.roots(np.polyder(coeffs))
+    real_roots = roots[np.isreal(roots)].real
+    inside = real_roots[(real_roots >= n_lo) & (real_roots <= n_hi)]
+    if inside.size == 0:
+        return poly, n_min
+
+    # Among the interior stationary points and the boundaries, pick the one
+    # with the lowest grand potential according to the fit.
+    candidates = np.concatenate(([n_lo, n_hi], inside))
+    n_min = float(candidates[int(np.argmin(poly(candidates)))])
+    return poly, n_min
+
+
 def equilibrium_particle_number(
     N: np.ndarray,
     ln_g: np.ndarray,
     mu: float,
     T: float = 300.0,
     kB: float = kB_KCAL,
-) -> int:
-    r"""Equilibrium particle number ``N_eq(mu) = argmin_N Omega(N, mu)``."""
+    degree: int = 4,
+) -> float:
+    r"""Equilibrium particle number ``N_eq(mu) = argmin_N Omega(N, mu)``.
+
+    Rather than returning the discrete sample with the smallest grand
+    potential, the grand potential ``Omega(N, mu)`` is fitted by a polynomial
+    of the given ``degree`` in ``N`` and the minimum of that fit is returned.
+    This yields a sub-integer estimate of the equilibrium particle number and
+    smooths over statistical noise in the Wang-Landau density of states.
+
+    Falls back to the discrete :func:`numpy.argmin` result when fewer than
+    ``degree + 1`` samples are available or when the fitted minimum lies
+    outside the sampled range of ``N``.
+    """
     N = np.asarray(N, dtype=float)
     omega = grand_potential(N, ln_g, mu, T=T, kB=kB)
-    return int(N[int(np.argmin(omega))])
+    _, n_min = _fitted_grand_potential(N, omega, degree)
+    return n_min

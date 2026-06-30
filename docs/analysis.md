@@ -57,7 +57,7 @@ both the example plot script and a command-line tool. The public API:
 | `read_qs_dat(path)` | Load a `qs.dat` file into a `WangLandauResult` (`.N`, `.ln_g`, `.histogram`). |
 | `helmholtz_free_energy(ln_g, T)` | `F(N) = -k_B T ln g(N)`. |
 | `grand_potential(N, ln_g, mu, T)` | `Omega(N, mu) = F(N) - mu N`. |
-| `equilibrium_particle_number(N, ln_g, mu, T)` | `argmin_N Omega(N, mu)`. |
+| `equilibrium_particle_number(N, ln_g, mu, T)` | Polynomial-fit minimum of `Omega(N, mu)`. |
 | `plot_grand_potential(result, mus)` | Quick figure of `Omega(N, mu)` for several `mu`. |
 | `plot_free_energy(result)` | Quick figure of `F(N)`. |
 
