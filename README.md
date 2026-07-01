@@ -35,6 +35,14 @@ lammps -in in.wang_landau
 
 Full docs at [pstaerk.github.io/lammps_wang_landau](https://pstaerk.github.io/lammps_wang_landau/)
 
+## Software Contributors
+
+Contributors to the software in this repository:
+
+- **[Philipp Stärk](https://github.com/pstaerk)**
+- **[Russell Kajouri](https://github.com/russellkajouri)**
+- **[Adyant Agrawal](https://github.com/adyant-agrawal)**
+
 ## Citation
 
 ```bibtex
