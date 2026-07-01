@@ -47,6 +47,13 @@
     margin-bottom: 1rem;
 }
 
+/* Center the logo on index page */
+.md-content__inner > p:first-of-type img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Badges */
 img[src*="badge"] {
     border-radius: 4px;

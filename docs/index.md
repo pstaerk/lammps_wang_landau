@@ -4,6 +4,8 @@ title: Home
 
 # LAMMPS Wang-Landau Extension
 
+![Logo](assets/logo.svg)
+
 A **Wang-Landau Monte Carlo** extension for [LAMMPS](https://www.lammps.org/), enabling efficient sampling of density-of-states and free energy calculations for molecular systems.
 
 ![Build Status](https://github.com/pstaerk/lammps_wang_landau/actions/workflows/build.yml/badge.svg)
