@@ -1,0 +1,27 @@
+name: lammps-wang-landau
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Core scientific computing
+  - python>=3.9
+  - numpy>=1.20
+
+  # Analysis tools
+  - matplotlib>=3.3
+
+  # Documentation
+  - pip
+  - pip:
+    - mkdocs-material>=9.0
+    - mkdocs-minify-plugin>=0.7
+
+  # Testing
+  - pytest>=7.0
+  - pytest-cov>=4.0
+
+  # Development tools (optional but recommended)
+  - black
+  - isort
+  - flake8
+  - mypy
