@@ -492,11 +492,14 @@ void FixWangLandau::init()
   std::string line;
   unsigned int nlines = 0;
   while (std::getline(file, line)) {
+      if (line.find_first_not_of(" \t\r\n") == std::string::npos) continue;
+
       std::istringstream iss(line);
       std::vector<double> row;
       for (int i = 0; i < 3; i++) {
           double val;
-          iss >> val;
+          if (!(iss >> val))
+            error->all(FLERR, "Malformed line in qs.dat: {}", line);
           row.push_back(val);
           iss.ignore();
       }
@@ -908,7 +911,7 @@ void FixWangLandau::pre_exchange()
 void FixWangLandau::wang_landau_update(const int n)
 {
   // Wang Landau update step
-  unsigned int bin_index = n2i[n];
+  unsigned int bin_index = n2i.at(n);
   qs[bin_index] += std::log(f);
   hs[bin_index]++;
 
@@ -931,15 +934,18 @@ void FixWangLandau::wang_landau_update(const int n)
 
 void FixWangLandau::write_histogram() {
   // Write the ns, qs, and hs to the qs.dat file, tab separated
-  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Barrier(world);
   if (comm->me == 0) {
     std::ofstream file("qs.dat");
+    if (!file.is_open())
+      error->one(FLERR, "Could not open qs.dat for writing");
     for (unsigned int i = 0; i < ns.size(); i++) {
       file << std::fixed << std::setprecision(17) << ns[i] << "\t" << qs[i] << "\t"
            << hs[i] << std::endl;
     }
     file.close();
   }
+  MPI_Barrier(world);
 }
 
 /* ----------------------------------------------------------------------
@@ -949,8 +955,8 @@ double FixWangLandau::wang_landau_factor(const int n, const int step)
 {
   // The Wang Landau factor is the ratio of the current bin to that of
   // the previous step.  This is used to scale the acceptance probability
-  unsigned int bin_index_is = n2i[n];
-  unsigned int bin_index_to = n2i[n+step];
+  unsigned int bin_index_is = n2i.at(n);
+  unsigned int bin_index_to = n2i.at(n+step);
 
   return qs[bin_index_is] - qs[bin_index_to];
 }
