@@ -2585,6 +2585,7 @@ double FixWangLandau::energy_full()
 
   // Revert the thing before
   update->ntimestep -= 1;
+  update->eflag_global = update->ntimestep;
   return total_energy;
 }
 
